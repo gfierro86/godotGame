@@ -1,0 +1,85 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Engine.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Ship.gd" type="Script" id=2]
+[ext_resource path="res://assets/easter-ship-Sheet.png" type="Texture" id=3]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+func _ready():
+	var screen_size = OS.get_screen_size(OS.get_current_screen())
+	var window_size = OS.get_window_size()
+	var centered_pos = (screen_size - window_size) / 2
+	OS.set_window_position(centered_pos)
+
+"
+
+[sub_resource type="Animation" id=5]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 8 ]
+}
+
+[sub_resource type="Animation" id=2]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 8 ]
+}
+
+[sub_resource type="AnimationNodeAnimation" id=3]
+animation = "Transformation"
+
+[sub_resource type="CapsuleShape2D" id=4]
+radius = 24.0
+height = 40.0
+
+[node name="ShipScene" type="Node2D"]
+position = Vector2( 128, 128 )
+script = SubResource( 1 )
+
+[node name="Ship" type="RigidBody2D" parent="."]
+gravity_scale = 0.0
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="Ship"]
+texture = ExtResource( 3 )
+hframes = 9
+frame = 8
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Ship/Sprite"]
+anims/Idle = SubResource( 5 )
+anims/Transformation = SubResource( 2 )
+
+[node name="AnimationTree" type="AnimationTree" parent="Ship/Sprite"]
+tree_root = SubResource( 3 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+
+[node name="Firepoint" type="Position2D" parent="Ship"]
+position = Vector2( 0, -40 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ship"]
+shape = SubResource( 4 )
+
+[node name="EngineLeft" parent="Ship" instance=ExtResource( 1 )]
+position = Vector2( -8, 55 )
+
+[node name="EngineRight" parent="Ship" instance=ExtResource( 1 )]
+position = Vector2( 6, 55 )

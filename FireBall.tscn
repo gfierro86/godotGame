@@ -1,0 +1,81 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://assets/fire-ball-sheet-Sheet.png" type="Texture" id=2]
+[ext_resource path="res://FireBall.gd" type="Script" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 17.8885
+
+[sub_resource type="Animation" id=2]
+resource_name = "idle"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 5, 9 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "start"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1, 4 ]
+}
+
+[sub_resource type="AnimationNodeAnimation" id=4]
+animation = "idle"
+
+[sub_resource type="AnimationNodeAnimation" id=5]
+animation = "start"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=6]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachine" id=7]
+states/idle/node = SubResource( 4 )
+states/idle/position = Vector2( 644, 137 )
+states/start/node = SubResource( 5 )
+states/start/position = Vector2( 468, 101 )
+transitions = [ "start", "idle", SubResource( 6 ) ]
+start_node = "start"
+end_node = "idle"
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=8]
+
+[node name="FireBall" type="Area2D"]
+position = Vector2( 512, 512 )
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+hframes = 10
+frame = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
+autoplay = "start"
+anims/idle = SubResource( 2 )
+anims/start = SubResource( 3 )
+
+[node name="AnimationTree" type="AnimationTree" parent="Sprite"]
+tree_root = SubResource( 7 )
+anim_player = NodePath("../AnimationPlayer")
+parameters/playback = SubResource( 8 )

@@ -1,0 +1,65 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://animation/engine-stop-idle.tres" type="Animation" id=1]
+[ext_resource path="res://animation/engine-on.tres" type="Animation" id=2]
+[ext_resource path="res://assets/engine-shee.png" type="Texture" id=3]
+[ext_resource path="res://animation/engine-start.tres" type="Animation" id=4]
+[ext_resource path="res://EngineAnimation.gd" type="Script" id=5]
+[ext_resource path="res://animation/engine-ramp-down.tres" type="Animation" id=6]
+
+[sub_resource type="AnimationNodeAnimation" id=1]
+animation = "engine-on"
+
+[sub_resource type="AnimationNodeAnimation" id=11]
+animation = "engine-ramp-down"
+
+[sub_resource type="AnimationNodeAnimation" id=2]
+animation = "engine-start"
+
+[sub_resource type="AnimationNodeAnimation" id=9]
+animation = "engine-stop-idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=5]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=10]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=12]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=13]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id=7]
+states/engine-on/node = SubResource( 1 )
+states/engine-on/position = Vector2( 569.5, 184.75 )
+states/engine-ramp-down/node = SubResource( 11 )
+states/engine-ramp-down/position = Vector2( 295.5, 183.625 )
+states/engine-start/node = SubResource( 2 )
+states/engine-start/position = Vector2( 427, 71.375 )
+states/engine-stop-idle/node = SubResource( 9 )
+states/engine-stop-idle/position = Vector2( 181.5, 69.6875 )
+transitions = [ "engine-start", "engine-on", SubResource( 5 ), "engine-stop-idle", "engine-start", SubResource( 10 ), "engine-on", "engine-ramp-down", SubResource( 12 ), "engine-ramp-down", "engine-stop-idle", SubResource( 13 ) ]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=8]
+
+[node name="Engine" type="Node2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+vframes = 3
+hframes = 3
+frame = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
+autoplay = "engine-stop-idle"
+anims/engine-on = ExtResource( 2 )
+anims/engine-ramp-down = ExtResource( 6 )
+anims/engine-start = ExtResource( 4 )
+anims/engine-stop-idle = ExtResource( 1 )
+
+[node name="AnimationTree" type="AnimationTree" parent="Sprite"]
+tree_root = SubResource( 7 )
+anim_player = NodePath("../AnimationPlayer")
+parameters/playback = SubResource( 8 )
+script = ExtResource( 5 )
