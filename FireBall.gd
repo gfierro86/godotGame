@@ -1,6 +1,6 @@
 extends Area2D
 
-const FIREBALL_SPEED = 250
+export var FIREBALL_SPEED = 500
 var direction = Vector2(0, -1);
 
 # Called when the node enters the scene tree for the first time.
