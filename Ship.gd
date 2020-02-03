@@ -4,9 +4,12 @@ extends RigidBody2D
 export var FIREBALL_SCENE = preload("res://FireBall.tscn")
 export var FIRE_RATE = 3
 export var ROT_SPEED = 100
-export var FW_SPEED = 100
+export var FW_SPEED = 10
+export var MAX_SPEED = 50
+export var BRAKE_SPEED = 15
 var fireInterval = 1000 / FIRE_RATE
 var lastFiredTime = OS.get_ticks_msec()
+var velocity = 0
 
 func _physics_process(delta):
 	if Input.is_action_pressed("fire"):
@@ -19,7 +22,14 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ui_left"):
 		rotation_degrees -= ROT_SPEED * delta
 	if Input.is_action_pressed("ui_up"):
-		position += (FW_SPEED * delta) * Vector2(0,-1).rotated(deg2rad(rotation_degrees))
+		velocity += (FW_SPEED * delta)
+		if velocity > MAX_SPEED:
+			velocity = MAX_SPEED
+	else:
+		velocity -= (BRAKE_SPEED * delta)
+		if velocity < 0:
+			velocity = 0
+	position += velocity * Vector2(0,-1).rotated(deg2rad(rotation_degrees))
 	
 func _shoot():
 	var firepoint = get_node("Firepoint")
