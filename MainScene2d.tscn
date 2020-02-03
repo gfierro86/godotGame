@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://ShipScene.tscn" type="PackedScene" id=1]
 
@@ -13,9 +13,27 @@ func _ready():
 
 "
 
+[sub_resource type="Gradient" id=2]
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+width = 2046
+
 [node name="MainScene2d" type="Node2D"]
-position = Vector2( 128, 128 )
+position = Vector2( 59, 63 )
 script = SubResource( 1 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = -5120.0
+margin_top = -5120.0
+margin_right = 5120.0
+margin_bottom = 5120.0
+texture = SubResource( 3 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ShipScene" parent="." instance=ExtResource( 1 )]
 position = Vector2( 448, 236 )

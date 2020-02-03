@@ -15,7 +15,7 @@ func _ready():
 
 "
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=2]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
@@ -29,7 +29,7 @@ tracks/0/keys = {
 "values": [ 8 ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=3]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
@@ -43,10 +43,10 @@ tracks/0/keys = {
 "values": [ 0, 8 ]
 }
 
-[sub_resource type="AnimationNodeAnimation" id=3]
+[sub_resource type="AnimationNodeAnimation" id=4]
 animation = "Transformation"
 
-[sub_resource type="CapsuleShape2D" id=4]
+[sub_resource type="CapsuleShape2D" id=5]
 radius = 24.0
 height = 40.0
 
@@ -64,11 +64,11 @@ hframes = 9
 frame = 8
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Ship/Sprite"]
-anims/Idle = SubResource( 5 )
-anims/Transformation = SubResource( 2 )
+anims/Idle = SubResource( 2 )
+anims/Transformation = SubResource( 3 )
 
 [node name="AnimationTree" type="AnimationTree" parent="Ship/Sprite"]
-tree_root = SubResource( 3 )
+tree_root = SubResource( 4 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 
@@ -76,10 +76,13 @@ active = true
 position = Vector2( 0, -40 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ship"]
-shape = SubResource( 4 )
+shape = SubResource( 5 )
 
 [node name="EngineLeft" parent="Ship" instance=ExtResource( 1 )]
-position = Vector2( -8, 55 )
+position = Vector2( -7, 55 )
 
 [node name="EngineRight" parent="Ship" instance=ExtResource( 1 )]
 position = Vector2( 6, 55 )
+
+[node name="Camera2D" type="Camera2D" parent="Ship"]
+current = true
