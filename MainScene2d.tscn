@@ -37,3 +37,5 @@ __meta__ = {
 
 [node name="ShipScene" parent="." instance=ExtResource( 1 )]
 position = Vector2( 448, 236 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
